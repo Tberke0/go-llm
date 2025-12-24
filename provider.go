@@ -43,6 +43,10 @@ type ProviderCapabilities struct {
 	FileSearch      bool // vector store file search
 	CodeInterpreter bool // sandboxed Python execution
 	MCP             bool // remote MCP servers / connectors
+	ImageGeneration bool // GPT Image model integration
+	ComputerUse     bool // computer-use-preview CUA model
+	Shell           bool // shell command execution (GPT-5.1+)
+	ApplyPatch      bool // structured file editing (GPT-5.1+)
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

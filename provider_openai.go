@@ -59,6 +59,10 @@ func (p *OpenAIProvider) Capabilities() ProviderCapabilities {
 		FileSearch:      true,
 		CodeInterpreter: true,
 		MCP:             true,
+		ImageGeneration: true,
+		ComputerUse:     true,
+		Shell:           true,
+		ApplyPatch:      true,
 	}
 }
 
@@ -488,6 +492,43 @@ func (p *OpenAIProvider) buildBuiltinTool(bt BuiltinTool) map[string]any {
 		if len(bt.AllowedTools) > 0 {
 			tool["allowed_tools"] = bt.AllowedTools
 		}
+
+	case "image_generation":
+		if bt.ImageSize != "" {
+			tool["size"] = bt.ImageSize
+		}
+		if bt.ImageQuality != "" {
+			tool["quality"] = bt.ImageQuality
+		}
+		if bt.ImageFormat != "" {
+			tool["output_format"] = bt.ImageFormat
+		}
+		if bt.ImageCompression > 0 {
+			tool["compression"] = bt.ImageCompression
+		}
+		if bt.ImageBackground != "" {
+			tool["background"] = bt.ImageBackground
+		}
+		if bt.PartialImages > 0 {
+			tool["partial_images"] = bt.PartialImages
+		}
+
+	case "computer_use_preview":
+		if bt.DisplayWidth > 0 {
+			tool["display_width"] = bt.DisplayWidth
+		}
+		if bt.DisplayHeight > 0 {
+			tool["display_height"] = bt.DisplayHeight
+		}
+		if bt.Environment != "" {
+			tool["environment"] = bt.Environment
+		}
+
+	case "shell":
+		// No additional configuration needed
+
+	case "apply_patch":
+		// No additional configuration needed
 	}
 
 	return tool
@@ -502,6 +543,7 @@ func (p *OpenAIProvider) parseResponsesResponse(body []byte) (*ProviderResponse,
 			ID      string `json:"id"`
 			Type    string `json:"type"`
 			Status  string `json:"status,omitempty"`
+			CallID  string `json:"call_id,omitempty"`
 			Role    string `json:"role,omitempty"`
 			Content []struct {
 				Type        string `json:"type"`
@@ -522,6 +564,28 @@ func (p *OpenAIProvider) parseResponsesResponse(body []byte) (*ProviderResponse,
 			Arguments   string `json:"arguments,omitempty"`
 			OutputText  string `json:"output,omitempty"`
 			Error       string `json:"error,omitempty"`
+
+			// Image generation fields
+			RevisedPrompt string `json:"revised_prompt,omitempty"`
+			Result        string `json:"result,omitempty"` // base64 image
+
+			// Shared action field - used by both computer_call and shell_call with different structures
+			// We use json.RawMessage to handle the polymorphic nature
+			Action json.RawMessage `json:"action,omitempty"`
+
+			// Safety checks (computer use)
+			PendingSafetyChecks []struct {
+				ID      string `json:"id"`
+				Code    string `json:"code"`
+				Message string `json:"message"`
+			} `json:"pending_safety_checks,omitempty"`
+
+			// Apply patch fields
+			Operation *struct {
+				Type string `json:"type"`
+				Path string `json:"path"`
+				Diff string `json:"diff,omitempty"`
+			} `json:"operation,omitempty"`
 		} `json:"output"`
 		OutputText string `json:"output_text,omitempty"` // Convenience field
 		Usage      struct {
@@ -582,12 +646,76 @@ func (p *OpenAIProvider) parseResponsesResponse(body []byte) (*ProviderResponse,
 				ID:          item.ID,
 				Type:        item.Type,
 				Status:      item.Status,
+				CallID:      item.CallID,
 				ServerLabel: item.ServerLabel,
 				Name:        item.Name,
 				Arguments:   item.Arguments,
 				Output:      item.OutputText,
 				Error:       item.Error,
 			})
+
+		case "image_generation_call":
+			toolCalls = append(toolCalls, ResponsesToolCall{
+				ID:            item.ID,
+				Type:          item.Type,
+				Status:        item.Status,
+				CallID:        item.CallID,
+				RevisedPrompt: item.RevisedPrompt,
+				ImageResult:   item.Result,
+			})
+
+		case "computer_call":
+			tc := ResponsesToolCall{
+				ID:     item.ID,
+				Type:   item.Type,
+				Status: item.Status,
+				CallID: item.CallID,
+			}
+			if len(item.Action) > 0 {
+				var action ComputerAction
+				if err := json.Unmarshal(item.Action, &action); err == nil {
+					tc.Action = &action
+				}
+			}
+			for _, sc := range item.PendingSafetyChecks {
+				tc.PendingSafetyChecks = append(tc.PendingSafetyChecks, SafetyCheck{
+					ID:      sc.ID,
+					Code:    sc.Code,
+					Message: sc.Message,
+				})
+			}
+			toolCalls = append(toolCalls, tc)
+
+		case "shell_call":
+			tc := ResponsesToolCall{
+				ID:     item.ID,
+				Type:   item.Type,
+				Status: item.Status,
+				CallID: item.CallID,
+			}
+			if len(item.Action) > 0 {
+				var action ShellAction
+				if err := json.Unmarshal(item.Action, &action); err == nil {
+					tc.ShellAction = &action
+				}
+			}
+			toolCalls = append(toolCalls, tc)
+
+		case "apply_patch_call":
+			tc := ResponsesToolCall{
+				ID:     item.ID,
+				Type:   item.Type,
+				Status: item.Status,
+				CallID: item.CallID,
+			}
+			if item.Operation != nil {
+				tc.PatchOperation = &PatchOperation{
+					Type: item.Operation.Type,
+					Path: item.Operation.Path,
+					Diff: item.Operation.Diff,
+				}
+			}
+			toolCalls = append(toolCalls, tc)
 		}
 	}
 

@@ -389,6 +389,14 @@ func (b *Builder) SendWithMeta() *ResponseMeta {
 				checkCapability(client.provider, "code_interpreter", client.provider.Capabilities().CodeInterpreter)
 			case "mcp":
 				checkCapability(client.provider, "mcp", client.provider.Capabilities().MCP)
+			case "image_generation":
+				checkCapability(client.provider, "image_generation", client.provider.Capabilities().ImageGeneration)
+			case "computer_use_preview":
+				checkCapability(client.provider, "computer_use", client.provider.Capabilities().ComputerUse)
+			case "shell":
+				checkCapability(client.provider, "shell", client.provider.Capabilities().Shell)
+			case "apply_patch":
+				checkCapability(client.provider, "apply_patch", client.provider.Capabilities().ApplyPatch)
 			}
 		}
 
